@@ -32,5 +32,30 @@ feature 'restaurants' do
     end
   end
 
+  context 'viewing restaurants' do
+    let!(:the_ox){Restaurant.create(name: 'The Ox')}
+
+    scenario 'lets a user view a restaurant' do
+      visit '/restaurants'
+      click_link 'The Ox'
+      expect(page).to have_content 'The Ox'
+      expect(current_path).to eq "/restaurants/#{the_ox.id}"
+    end
+  end
+
+  context 'editing restaurants' do
+    before { Restaurant.create name: 'The Ox' }
+
+    scenario 'let a user edit a restaurant' do
+      visit '/restaurants'
+      click_link 'Edit The Ox'
+      fill_in 'Name', with: 'The Ox restaurant'
+      click_button 'Update Restaurant'
+      expect(page).to have_content 'The Ox restaurant'
+      expect(current_path).to eq '/restaurants'
+    end
+  end
+
+
 
 end
