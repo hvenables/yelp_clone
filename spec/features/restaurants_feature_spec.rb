@@ -35,9 +35,9 @@ feature 'restaurants' do
         it 'does not let you submit a name that is too short' do
           visit '/restaurants'
           click_link 'Add a restaurant'
-          fill_in 'Name', with: 'th'
+          fill_in 'Name', with: 'bz'
           click_button 'Create Restaurant'
-          expect(page).not_to have_css 'h2', text: 'th'
+          expect(page).not_to have_css 'h2', text: 'bz'
           expect(page).to have_content 'error'
         end
       end
