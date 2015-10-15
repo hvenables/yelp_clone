@@ -53,8 +53,11 @@ feature 'reviewing' do
     expect(page).not_to have_content('Delete Review for The Ox')
   end
 
-
-  # scenario ''
+  scenario 'displays an average rating for all reviews' do 
+    leave_review("so so", 3)
+    leave_review("great", 5)
+    expect(page).to have_content('Average rating: 4')
+  end
 
 
 end
