@@ -24,6 +24,7 @@
             = review.thoughts
             %strong= review.rating
             \/5
+            %p= pluralize review.endorsements.count, 'endorsement'
             - if current_user
               - if (review.user_id == current_user.id)
                 = link_to "Delete Review for #{restaurant.name}", review_path(review), method: :delete
