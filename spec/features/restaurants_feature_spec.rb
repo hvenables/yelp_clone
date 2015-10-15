@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 feature 'restaurants' do
+
+  before do
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testttest')
+    fill_in('Password confirmation', with: 'testttest')
+    click_button('Sign up')
+  end
+
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -31,19 +41,28 @@ feature 'restaurants' do
       expect(current_path).to eq '/restaurants'
     end
 
-      context 'an invalid restaurant' do
-        it 'does not let you submit a name that is too short' do
-          visit '/restaurants'
-          click_link 'Add a restaurant'
-          fill_in 'Name', with: 'bz'
-          click_button 'Create Restaurant'
-          expect(page).not_to have_css 'h2', text: 'bz'
-          expect(page).to have_content 'error'
-        end
+    context 'an invalid restaurant' do
+      scenario 'does not let you submit a name that is too short' do
+        visit '/restaurants'
+        click_link 'Add a restaurant'
+        fill_in 'Name', with: 'bz'
+        click_button 'Create Restaurant'
+        expect(page).not_to have_css 'h2', text: 'bz'
+        expect(page).to have_content 'error'
       end
+    end
+
+    context 'when not signed in' do 
+      scenario 'does not let you create a restaurant when not signed in' do 
+        click_link 'Sign out' 
+        click_link 'Add a restaurant'
+        expect(current_path).to eq '/users/sign_in'
+      end
+    end
+
   end
 
-  context 'viewing restaurants' do
+  context 'viewing restaurants' do    
     let!(:the_ox){Restaurant.create(name: 'The Ox')}
 
     scenario 'lets a user view a restaurant' do
