@@ -52,9 +52,9 @@ feature 'restaurants' do
       end
     end
 
-    context 'when not signed in' do 
-      scenario 'does not let you create a restaurant when not signed in' do 
-        click_link 'Sign out' 
+    context 'when not signed in' do
+      scenario 'does not let you create a restaurant when not signed in' do
+        click_link 'Sign out'
         click_link 'Add a restaurant'
         expect(current_path).to eq '/users/sign_in'
       end
@@ -62,7 +62,7 @@ feature 'restaurants' do
 
   end
 
-  context 'viewing restaurants' do    
+  context 'viewing restaurants' do
     let!(:the_ox){Restaurant.create(name: 'The Ox')}
 
     scenario 'lets a user view a restaurant' do
@@ -74,10 +74,12 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-    before { Restaurant.create name: 'The Ox' }
 
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'The Ox'
+      click_button 'Create Restaurant'
       click_link 'Edit The Ox'
       fill_in 'Name', with: 'The Ox restaurant'
       click_button 'Update Restaurant'
@@ -87,15 +89,26 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before { Restaurant.create name: 'The Ox'}
 
     scenario 'removes a restaurant when user clicks delete' do
       visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'The Ox'
+      click_button 'Create Restaurant'
       click_link 'Delete The Ox'
       expect(page).not_to have_content('The Ox')
       expect(page).to have_content('Restaurant deleted successfully')
     end
 
+    scenario 'can only remove restaurant if created by user' do
+      click_link 'Sign out'
+      click_link 'Sign up'
+      fill_in 'Email', with: 'emily@example.com'
+      fill_in 'Password', with: '12345678'
+      fill_in 'Password confirmation', with: '12345678'
+      click_button 'Sign up'
+      expect(page).not_to have_content('Delete The Ox')
+    end
   end
 
 

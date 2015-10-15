@@ -1,6 +1,15 @@
 require 'rails_helper'
 
-feature 'reviewing' do 
+feature 'reviewing' do
+
+  before do
+    visit('/')
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testttest')
+    fill_in('Password confirmation', with: 'testttest')
+    click_button('Sign up')
+  end
 
   before {Restaurant.create name: 'The Ox'}
 
