@@ -53,10 +53,12 @@ feature 'reviewing' do
     expect(page).not_to have_content('Delete Review for The Ox')
   end
 
-  scenario 'displays an average rating for all reviews' do 
+  scenario 'displays an average rating for all reviews' do
     leave_review("so so", 3)
+    click_link 'Sign out'
+    sign_up_with('dom@example.com')
     leave_review("great", 5)
-    expect(page).to have_content('Average rating: 4')
+    expect(page).to have_content('Average rating: ★★★★☆')
   end
 
 
