@@ -22,6 +22,9 @@
             = review.thoughts
             %strong= review.rating
             \/5
+            - if current_user
+              - if (review.user_id == current_user.id)
+                = link_to "Delete Review for #{restaurant.name}", restaurant_review_path(restaurant, review), method: :delete
     - else
       %p No reviews
 
