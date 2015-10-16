@@ -26,6 +26,7 @@
             \/5
             %p= relative_time(review.created_at)
             %p= pluralize review.endorsements.count, 'endorsement'
+            = link_to "Endorse", review_endorsements_path(review), method: :post
             - if current_user
               - if (review.user_id == current_user.id)
                 = link_to "Delete Review for #{restaurant.name}", review_path(review), method: :delete
