@@ -22,6 +22,11 @@ feature 'reviewing' do
 
   before do
     sign_up_with('test@example.com')
+    Timecop.freeze(Time.local(2015))
+  end
+
+  after do 
+    Timecop.return
   end
 
   before {Restaurant.create name: 'The Ox'}
@@ -30,6 +35,7 @@ feature 'reviewing' do
     leave_review("so so", 3)
     expect(current_path).to eq '/restaurants'
     expect(page).to have_content 'so so'
+    expect(page).to have_content('Just now')
   end
 
   scenario 'user can only leave one review per restaurant' do

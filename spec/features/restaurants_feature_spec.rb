@@ -109,6 +109,7 @@ feature 'restaurants' do
       click_button 'Sign up'
       expect(page).not_to have_content('Delete The Ox')
     end
+
   end
 
 
