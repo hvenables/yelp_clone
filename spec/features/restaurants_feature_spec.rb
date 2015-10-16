@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'restaurants' do
 
-  before do
+  before(:each) do
     visit('/')
     click_link('Sign up')
     fill_in('Email', with: 'test@example.com')
@@ -112,11 +112,14 @@ feature 'restaurants' do
 
   end
 
-
-
-
-
-
-
-
+  context 'uploading an image' do
+    scenario 'Can upload a image to a restaurant' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: "Dom's Eatery"
+      page.attach_file 'restaurant[image]', 'spec/assets/images/dom-s-eatery.jpg'
+      click_button 'Create Restaurant'
+      expect(page).to have_selector('img')
+    end
+  end
 end
